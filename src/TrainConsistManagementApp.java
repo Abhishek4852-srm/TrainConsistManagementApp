@@ -1,39 +1,51 @@
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrainConsistManagementApp {
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    private List<String> bogieList = new ArrayList<>();
 
-        System.out.println("=== Train Consist Management System ===");
-        System.out.println("Use Case 18: Linear Search for Bogie ID");
-        System.out.print("Enter number of bogies: ");
-        int n = scanner.nextInt();
-        scanner.nextLine(); // consume newline
+    // Method to add bogies
+    public void addBogie(String bogieId) {
+        bogieList.add(bogieId);
+        System.out.println("Bogie " + bogieId + " added successfully.");
+    }
 
-        String[] bogieIDs = new String[n];
-        System.out.println("Enter bogie IDs:");
-        for (int i = 0; i < n; i++) {
-            bogieIDs[i] = scanner.nextLine();
+    // UC20: Search operation with fail-fast validation
+    public boolean searchBogie(String bogieId) {
+        // Defensive check before searching
+        if (bogieList.isEmpty()) {
+            throw new IllegalStateException(
+                    "Search operation failed: No bogies available in the train consist. Please add bogies before searching."
+            );
         }
 
-        System.out.print("Enter bogie ID to search: ");
-        String searchKey = scanner.nextLine();
-
-        boolean found = false;
-        for (int i = 0; i < bogieIDs.length; i++) {
-            if (bogieIDs[i].equals(searchKey)) {
-                System.out.println("Bogie ID " + searchKey + " found at position " + (i + 1));
-                found = true;
-                break; // Early termination once match is found
+        // Proceed with search if validation passes
+        for (String id : bogieList) {
+            if (id.equalsIgnoreCase(bogieId)) {
+                System.out.println("Bogie " + bogieId + " found in the train consist.");
+                return true;
             }
         }
 
-        if (!found) {
-            System.out.println("Bogie ID " + searchKey + " not found in the consist.");
+        System.out.println("Bogie " + bogieId + " not found in the train consist.");
+        return false;
+    }
+
+    public static void main(String[] args) {
+        TrainConsistManagementApp app = new TrainConsistManagementApp();
+
+        try {
+            // Attempting search before adding bogies
+            app.searchBogie("BG101");
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
         }
 
-        System.out.println("\nUC19 search completed..");
-        scanner.close();
+        // Adding bogies and performing valid searches
+        app.addBogie("BG101");
+        app.addBogie("BG205");
+        app.searchBogie("BG205");   // Found
+        app.searchBogie("BG999");   // Not found
     }
 }
