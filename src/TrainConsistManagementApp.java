@@ -1,34 +1,46 @@
-// Custom Exception Class
-class InvalidCapacityException extends Exception {
-    public InvalidCapacityException(String message) {
+// Custom Runtime Exception
+class CargoSafetyException extends RuntimeException {
+    public CargoSafetyException(String message) {
         super(message);
     }
 }
 
-// Passenger Bogie Class
-class PassengerBogie {
-    private String name;
-    private int capacity;
+// Goods Bogie Class
+class GoodsBogie {
+    private String shape;
+    private String cargo;
 
-    public PassengerBogie(String name, int capacity) throws InvalidCapacityException {
-        if (capacity <= 0) {
-            throw new InvalidCapacityException("Capacity must be greater than zero");
+    public GoodsBogie(String shape) {
+        this.shape = shape;
+    }
+
+    public String getShape() {
+        return shape;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    // Cargo assignment with try-catch-finally
+    public void assignCargo(String cargo) {
+        try {
+            System.out.println("\nAttempting cargo validation for " + shape + " bogie...");
+            if (shape.equalsIgnoreCase("Rectangular") && cargo.equalsIgnoreCase("Petroleum")) {
+                throw new CargoSafetyException("Unsafe cargo assignment!");
+            }
+            this.cargo = cargo;
+            System.out.println("Cargo validation successful for " + shape + " bogie.");
+        } catch (CargoSafetyException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            System.out.println("Cargo validation completed for " + shape + " bogie.");
         }
-        this.name = name;
-        this.capacity = capacity;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getCapacity() {
-        return capacity;
     }
 
     @Override
     public String toString() {
-        return name + " -> " + capacity;
+        return shape + " -> " + (cargo != null ? cargo : "No Cargo Assigned");
     }
 }
 
@@ -36,24 +48,18 @@ class PassengerBogie {
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
         System.out.println("===============================================");
-        System.out.println("UC14 - Handle Invalid Bogie Capacity (Custom Exception)");
+        System.out.println("UC15 - Safe Cargo Assignment Using try-catch-finally");
         System.out.println("===============================================");
 
-        try {
-            PassengerBogie sleeper = new PassengerBogie("Sleeper", 72);
-            System.out.println("Created: " + sleeper);
+        GoodsBogie rectangular = new GoodsBogie("Rectangular");
+        GoodsBogie cylindrical = new GoodsBogie("Cylindrical");
 
-            PassengerBogie acChair = new PassengerBogie("AC Chair", 56);
-            System.out.println("Created: " + acChair);
+        // Safe assignment
+        cylindrical.assignCargo("Petroleum");
 
-            // Invalid bogie creation (capacity = 0)
-            PassengerBogie invalid = new PassengerBogie("First Class", 0);
-            System.out.println("Created: " + invalid);
+        // Unsafe assignment
+        rectangular.assignCargo("Petroleum");
 
-        } catch (InvalidCapacityException e) {
-            System.out.println("❌ Exception: " + e.getMessage());
-        }
-
-        System.out.println("\nUC14 validation completed...");
+        System.out.println("\nUC15 runtime completed...");
     }
 }
