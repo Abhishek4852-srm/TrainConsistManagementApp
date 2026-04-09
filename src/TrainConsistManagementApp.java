@@ -33,7 +33,7 @@ public class TrainConsistManagementApp {
             System.out.println("Bogie ID " + searchKey + " not found in the consist.");
         }
 
-        System.out.println("\nUC18 search completed...");
+        System.out.println("\nUC19 search completed..");
         scanner.close();
     }
 }
