@@ -1,65 +1,39 @@
-// Custom Runtime Exception
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
+import java.util.Scanner;
 
-// Goods Bogie Class
-class GoodsBogie {
-    private String shape;
-    private String cargo;
-
-    public GoodsBogie(String shape) {
-        this.shape = shape;
-    }
-
-    public String getShape() {
-        return shape;
-    }
-
-    public String getCargo() {
-        return cargo;
-    }
-
-    // Cargo assignment with try-catch-finally
-    public void assignCargo(String cargo) {
-        try {
-            System.out.println("\nAttempting cargo validation for " + shape + " bogie...");
-            if (shape.equalsIgnoreCase("Rectangular") && cargo.equalsIgnoreCase("Petroleum")) {
-                throw new CargoSafetyException("Unsafe cargo assignment!");
-            }
-            this.cargo = cargo;
-            System.out.println("Cargo validation successful for " + shape + " bogie.");
-        } catch (CargoSafetyException e) {
-            System.out.println("Error: " + e.getMessage());
-        } finally {
-            System.out.println("Cargo validation completed for " + shape + " bogie.");
-        }
-    }
-
-    @Override
-    public String toString() {
-        return shape + " -> " + (cargo != null ? cargo : "No Cargo Assigned");
-    }
-}
-
-// Main Program
 public class TrainConsistManagementApp {
+
     public static void main(String[] args) {
-        System.out.println("===============================================");
-        System.out.println("UC15 - Safe Cargo Assignment Using try-catch-finally");
-        System.out.println("===============================================");
+        Scanner scanner = new Scanner(System.in);
 
-        GoodsBogie rectangular = new GoodsBogie("Rectangular");
-        GoodsBogie cylindrical = new GoodsBogie("Cylindrical");
+        System.out.println("=== Train Consist Management System ===");
+        System.out.println("Use Case 16: Sort Passenger Bogies by Capacity");
+        System.out.print("Enter number of passenger bogies: ");
+        int n = scanner.nextInt();
 
-        // Safe assignment
-        cylindrical.assignCargo("Petroleum");
+        int[] capacities = new int[n];
+        System.out.println("Enter capacities of passenger bogies:");
+        for (int i = 0; i < n; i++) {
+            capacities[i] = scanner.nextInt();
+        }
 
-        // Unsafe assignment
-        rectangular.assignCargo("Petroleum");
+        // Bubble Sort Algorithm
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (capacities[j] > capacities[j + 1]) {
+                    // Swap adjacent elements
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
+        }
 
-        System.out.println("\nUC15 runtime completed...");
+        System.out.println("\nSorted Passenger Bogie Capacities (Ascending Order):");
+        for (int capacity : capacities) {
+            System.out.print(capacity + " ");
+        }
+
+        System.out.println("\nUC16 sorting completed....");
+        scanner.close();
     }
 }
