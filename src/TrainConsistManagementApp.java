@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class TrainConsistManagementApp {
@@ -7,24 +6,34 @@ public class TrainConsistManagementApp {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=== Train Consist Management System ===");
-        System.out.println("Use Case 17: Sort Bogie Names Using Arrays.sort()");
-        System.out.print("Enter number of bogie types: ");
+        System.out.println("Use Case 18: Linear Search for Bogie ID");
+        System.out.print("Enter number of bogies: ");
         int n = scanner.nextInt();
         scanner.nextLine(); // consume newline
 
-        String[] bogieNames = new String[n];
-        System.out.println("Enter bogie type names:");
+        String[] bogieIDs = new String[n];
+        System.out.println("Enter bogie IDs:");
         for (int i = 0; i < n; i++) {
-            bogieNames[i] = scanner.nextLine();
+            bogieIDs[i] = scanner.nextLine();
         }
 
-        // Sorting using built-in Arrays.sort()
-        Arrays.sort(bogieNames);
+        System.out.print("Enter bogie ID to search: ");
+        String searchKey = scanner.nextLine();
 
-        System.out.println("\nSorted Bogie Names (Alphabetical Order):");
-        System.out.println(Arrays.toString(bogieNames));
+        boolean found = false;
+        for (int i = 0; i < bogieIDs.length; i++) {
+            if (bogieIDs[i].equals(searchKey)) {
+                System.out.println("Bogie ID " + searchKey + " found at position " + (i + 1));
+                found = true;
+                break; // Early termination once match is found
+            }
+        }
 
-        System.out.println("\nSorting completed successfully!");
+        if (!found) {
+            System.out.println("Bogie ID " + searchKey + " not found in the consist.");
+        }
+
+        System.out.println("\nUC18 search completed...");
         scanner.close();
     }
 }
